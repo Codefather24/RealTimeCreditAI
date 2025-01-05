@@ -1,4 +1,4 @@
-# CreditPulse
+# RealTimeCreditAI
 
 An AI-powered system for real-time credit risk assessment using alternative data sources like social media sentiment, utility payments, and geolocation. This project combines machine learning, natural language processing (NLP), and explainable AI to deliver accurate and transparent credit scores.
 
@@ -69,4 +69,4 @@ This project is licensed under the [MIT License](LICENSE).
 ## Contact
 
 - **Email:** thecodefather24@gmail.com
-- **GitHub:** [https://github.com/yourusername/CreditPulse](https://github.com/Codefather24/RealTimeCreditAI)
+- **GitHub:** [https://github.com/Codefather24/CreditPulse](https://github.com/Codefather24/RealTimeCreditAI)
