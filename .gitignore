@@ -1,0 +1,68 @@
+# Byte-compiled / optimized / compiled Python files
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual Environment
+env/
+venv/
+*.env
+*.venv
+ENV/
+.env
+.venv
+
+# Data Files
+*.csv
+*.tsv
+*.json
+*.xml
+*.xlsx
+*.db
+*.h5
+
+# Machine Learning Artifacts
+*.model
+*.joblib
+*.pickle
+*.pkl
+*.hdf5
+
+# Logs and Temp Files
+*.log
+*.tmp
+*.out
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+
+# IDE / Editor Files
+.vscode/
+.idea/
+*.iml
+
+# System Files
+.DS_Store
+Thumbs.db
+
+# Test Coverage Reports
+htmlcov/
+.coverage
+*.cover
+*.gcov
+*.lcov
+coverage.xml
+
+# Build Files
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Pipfile
+Pipfile.lock
+
+# Docker Files
+docker-compose.override.yml
+*.docker
