@@ -5,6 +5,7 @@ from xgboost import XGBClassifier
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
 import seaborn as sns
 import matplotlib.pyplot as plt
+import numpy as np
 
 # Step 1: Load the traditional dataset
 file_path = r"C:\Users\ritha\OneDrive\Desktop\archive\UCI_Credit_Card.csv"  # Change this path if needed
@@ -49,7 +50,7 @@ X = df_preprocessed.drop(columns=["default.payment.next.month"])  # Features
 y = df_preprocessed["default.payment.next.month"]  # Target column
 
 # Step 4: Split the data into training and testing sets
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1, random_state=42)
 
 # Step 5: Initialize and train the XGBoost model
 model = XGBClassifier(n_estimators=500, learning_rate=0.1, max_depth=6, random_state=42)
@@ -57,6 +58,7 @@ model.fit(X_train, y_train)
 
 # Step 6: Make predictions on the test set
 y_pred = model.predict(X_test)
+y_prob = model.predict_proba(X_test)[:, 1]  # Get predicted probabilities for the positive class (default)
 
 # Step 7: Evaluate the model
 print("Accuracy:", accuracy_score(y_test, y_pred)*100, "%")
@@ -72,3 +74,24 @@ plt.xlabel('Predicted')
 plt.ylabel('Actual')
 plt.title('Confusion Matrix')
 plt.show()
+
+# Step 9: Loan Approval Decision (using a threshold)
+threshold = 0.5  # You can adjust this threshold depending on the bank's risk appetite
+loan_approval = np.where(y_prob >= threshold, 0, 1)  # 0 for approve, 1 for reject
+
+# Step 10: Create a decision DataFrame to show loan approval outcomes
+decision_df = pd.DataFrame({
+    'Customer_ID': X_test.index,
+    'Predicted_Probability_of_Default': y_prob,
+    'Loan_Approval_Decision': loan_approval
+})
+
+# Step 11: Save the loan approval decisions to a CSV file (separate page)
+decision_file_path = r"C:\Users\ritha\OneDrive\Desktop\loan_approval_decision.csv"
+decision_df.to_csv(decision_file_path, index=False)
+
+# Step 12: Print the first few loan approval decisions to the console
+print("Loan Approval Decisions (First 5 customers):")
+print(decision_df.head())
+
+# You can now check the 'loan_approval_decision.csv' file for detailed loan approval outcomes.
