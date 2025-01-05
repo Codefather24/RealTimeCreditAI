@@ -1,0 +1,12 @@
+pandas
+scikit-learn
+seaborn
+matplotlib
+xgboost
+tweepy
+time
+numpy
+re
+textblob
+geopandas
+joblib
