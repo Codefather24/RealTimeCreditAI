@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Credit Worthiness Checker</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            padding: 40px;
+            text-align: center;
+            width: 400px;
+        }
+        #customerImage {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 20px;
+        }
+        #customerID {
+            width: 100%;
+            padding: 12px;
+            margin: 15px 0;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        #customerID:focus {
+            outline: none;
+            border-color: #4a90e2;
+        }
+        #fileInput {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+        }
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+        .credit-worthy {
+            background-color: #e6f3e6;
+            color: green;
+        }
+        .not-credit-worthy {
+            background-color: #f3e6e6;
+            color: red;
+        }
+        body{
+            background-image:url("ABCD.jpeg");
+            background-size: cover;
+        }
+        .div{
+
+            position: relative;
+            top:40%;
+            right:31%;
+            font-size:20px;
+            color:rgb(0, 0, 0);
+            text-shadow:0 0 15px;
+
+        }
+        .container{
+            margin-left:40%;
+            position: relative;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img id="customerImage" src="/home/heisenberg/Desktop/Sigma.jpg" alt="Customer Profile">
+        <input type="text" id="customerID" placeholder="Enter Customer ID">
+        <button onclick="checkCreditworthiness()">Check Creditworthiness</button>
+        <div id="result"></div>
+    </div>
+    <input type="file" id="fileInput" accept=".csv"><br><br>
+  
+
+    <script>
+        let customerData = {};
+
+        document.getElementById('fileInput').addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            const reader = new FileReader();
+
+            reader.onload = (e) => {
+                const csvText = e.target.result;
+                parseCSV(csvText);
+            };
+
+            reader.readAsText(file);
+        });
+
+        function parseCSV(csvText) {
+            const rows = csvText.split('\n').slice(1);
+            customerData = new Map(
+                rows.map(row => {
+                    const [customerID, defaultProb, decision] = row.split(',');
+                    return [
+                        customerID, 
+                        {
+                            decision: parseInt(decision),
+                            default_prob: parseFloat(defaultProb)
+                        }
+                    ];
+                })
+            );
+        }
+
+        function checkCreditworthiness() {
+            const customerID = document.getElementById('customerID').value;
+            const resultDiv = document.getElementById('result');
+
+            if (!customerData) {
+                resultDiv.innerHTML = 'Please upload CSV first';
+                return;
+            }
+
+            const customer = customerData.get(customerID);
+
+            if (customer) {
+                if (customer.decision === 1) {
+                    resultDiv.innerHTML = `
+                        <div class="credit-worthy">
+                            Customer is Credit Worthy<br>
+                            Default Probability: ${(customer.default_prob * 100).toFixed(2)}%
+                        </div>
+                    `;
+                } else {
+                    resultDiv.innerHTML = `
+                        <div class="not-credit-worthy">
+                            Customer is Not Credit Worthy<br>
+                            Default Probability: ${(customer.default_prob * 100).toFixed(2)}%
+                        </div>
+                    `;
+                }
+            } else {
+                resultDiv.innerHTML = 'Customer ID Not Found';
+            }
+        }
+    </script>
+    <div class="div">
+
+        <center>
+            <h3>Note:</h3><p>Please Upload the file from the Github Repo "loan_approval_decision.csv" to the browse dialogue box on the bottom right .</p>
+        </center>
+    </div>
+</body>
+</html>
